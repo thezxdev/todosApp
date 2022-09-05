@@ -1,12 +1,18 @@
+import { useState } from 'react';
 import { Grid } from '@mui/material';
 import { TodoCard } from './components/TodoCard';
 
 export const TodoApp = () => {
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Grid
       container
       margin='0 auto'
-      spacing={ 3 }
+      spacing={3}
       width='80%'
     >
       {
@@ -22,12 +28,16 @@ export const TodoApp = () => {
                 xl: '25%'
               }
             }}
-            key={ val }
+            key={val}
           >
-            <TodoCard />
+            <TodoCard
+              handleUpdate={handleOpen}
+              id={val}
+            />
           </Grid>
         ))
       }
+
     </Grid>
   )
 }

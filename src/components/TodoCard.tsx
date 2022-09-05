@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import {
   AutorenewOutlined,
   DeleteForeverOutlined,
@@ -12,7 +13,12 @@ import {
   Typography
 } from '@mui/material';
 
-export const TodoCard = () => {
+interface Props {
+  id: number;
+  handleUpdate: ( id: number ) => void;
+}
+
+export const TodoCard: FC<Props> = ({ id, handleUpdate }) => {
   return (
     <Card>
       <CardHeader
@@ -34,7 +40,7 @@ export const TodoCard = () => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <IconButton>
+        <IconButton onClick={ () => handleUpdate( id )}>
           <AutorenewOutlined color="info" />
         </IconButton>
         <IconButton>
