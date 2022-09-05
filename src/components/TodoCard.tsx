@@ -12,13 +12,22 @@ import {
   IconButton,
   Typography
 } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../store';
+import { openCloseModal } from '../store/slices/updateModalSlice';
 
 interface Props {
   id: number;
-  handleUpdate: ( id: number ) => void;
 }
 
-export const TodoCard: FC<Props> = ({ id, handleUpdate }) => {
+export const TodoCard: FC<Props> = ({ id }) => {
+
+  const { isModalOpen } = useAppSelector( state => state.modalUpdate );
+  const dispatch = useAppDispatch();
+
+  const handleModal = () => {
+    dispatch( openCloseModal() );
+  }
+
   return (
     <Card>
       <CardHeader
@@ -40,7 +49,7 @@ export const TodoCard: FC<Props> = ({ id, handleUpdate }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <IconButton onClick={ () => handleUpdate( id )}>
+        <IconButton onClick={ () => handleModal() }>
           <AutorenewOutlined color="info" />
         </IconButton>
         <IconButton>

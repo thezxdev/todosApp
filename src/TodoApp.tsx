@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import { Grid } from '@mui/material';
 import { TodoCard } from './components/TodoCard';
+import { UpdateModal } from './components/UpdateModal';
+import { useAppSelector } from './store';
 
 export const TodoApp = () => {
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { isModalOpen } = useAppSelector( state => state.modalUpdate );
 
   return (
     <Grid
@@ -31,13 +30,18 @@ export const TodoApp = () => {
             key={val}
           >
             <TodoCard
-              handleUpdate={handleOpen}
               id={val}
             />
           </Grid>
         ))
       }
 
+
+      {/* Mostrar modal */}
+      {
+        isModalOpen && <UpdateModal />
+      }
     </Grid>
+
   )
 }

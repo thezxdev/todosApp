@@ -1,6 +1,7 @@
 import { Modal, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../store';
+import { openCloseModal } from '../store/slices/updateModalSlice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -16,10 +17,19 @@ const style = {
 
 export const UpdateModal = () => {
 
+  const { isModalOpen } = useAppSelector( state => state.modalUpdate );
+  const dispatch = useAppDispatch();
+
+  const handleClose= () => {
+
+    dispatch( openCloseModal() );
+
+  }
+
   return (
     <Modal
-      open={ true }
-      onClose={ handleClose }
+      open={ isModalOpen }
+      onClose={ () => handleClose() }
     >
       <Box sx={ style }>
         <Typography>
