@@ -1,6 +1,33 @@
+import { Grid } from '@mui/material';
+import { TodoCard } from './components/TodoCard';
 
 export const TodoApp = () => {
   return (
-    <div>TodoApp</div>
+    <Grid
+      container
+      margin='0 auto'
+      spacing={ 3 }
+      width='80%'
+    >
+      {
+        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(val => (
+          <Grid
+            item
+            sx={{
+              width: {
+                xs: '100%',
+                sm: '50%',
+                md: '50%',
+                lg: '33.3%',
+                xl: '25%'
+              }
+            }}
+            key={ val }
+          >
+            <TodoCard />
+          </Grid>
+        ))
+      }
+    </Grid>
   )
 }
