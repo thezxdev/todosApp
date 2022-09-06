@@ -22,6 +22,7 @@ interface Props {
 export const TodoCard: FC<Props> = ({ id }) => {
 
   const { isModalOpen } = useAppSelector( state => state.modalUpdate );
+  const { isLoading, message, todos, selectedTodo } = useAppSelector( state => state.todos );
   const dispatch = useAppDispatch();
 
   const handleModal = () => {

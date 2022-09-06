@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { todosSlice } from './slices/todosSlice';
 import { modalUpdateSlice } from './slices/updateModalSlice';
 
 
 export const store = configureStore({
   reducer: {
-    modalUpdate: modalUpdateSlice.reducer
+    modalUpdate: modalUpdateSlice.reducer,
+    todos: todosSlice.reducer
   }
 });
 
