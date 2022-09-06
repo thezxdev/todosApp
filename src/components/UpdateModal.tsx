@@ -3,6 +3,7 @@ import { Button, Checkbox, FormControlLabel, IconButton, Modal, TextField, Typog
 import { Box } from '@mui/system';
 import { useAppDispatch, useAppSelector } from '../store';
 import { openCloseModal } from '../store/slices/updateModalSlice';
+import { useForm } from '../hooks/useForm';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -27,7 +28,16 @@ export const UpdateModal = () => {
 
   }
 
+  // Formulario
+  const { completed, description, title, onChange, state } = useForm({
+    title: '',
+    description: '',
+    completed: false,
+  });
+
   return (
+
+
     <Modal
       open={ isModalOpen }
       onClose={ () => handleClose() }
@@ -38,19 +48,28 @@ export const UpdateModal = () => {
           <TextField
             fullWidth
             label="Título"
+            name="title"
+            onChange={ ({ target }) => onChange( target.value, 'title' ) }
           />
 
           <FormControlLabel
             sx={{ width: '100%' }}
             label="¿Completado?"
-            control={ <Checkbox /> }
+            control={ <Checkbox
+              name="completed"
+              onChange={ ({ target }) => onChange( target.checked, 'completed' ) }
+            /> }
+            
           />
 
           <TextField
             fullWidth
             label="Descripción"
+            name="description"
+            onChange={ ({ target }) => onChange( target.value, 'description' )}
           />
 
+          <pre>{ JSON.stringify( state ) }</pre>
 
           <Button variant="outlined" startIcon={ <SaveOutlined /> } fullWidth sx={{ marginTop: 2 }}>
             Guardar
@@ -63,9 +82,9 @@ export const UpdateModal = () => {
   )
 }
 
-interface todosInterface {
-  id?: string;
-  completed: boolean;
-  description: string;
-  title: string;
-}
+// interface todosInterface {
+//   id?: string;
+//   completed: boolean;
+//   description: string;
+//   title: string;
+// }
