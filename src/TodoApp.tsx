@@ -41,7 +41,7 @@ export const TodoApp = () => {
         width='80%'
       >
         {
-          todos.map(({ id }) => (
+          todos.map(( todo ) => (
             <Grid
               item
               sx={{
@@ -53,9 +53,10 @@ export const TodoApp = () => {
                   xl: '25%'
                 }
               }}
-              key={id}
+              key={ todo.id }
             >
               <TodoCard
+                { ...todo }
               />
             </Grid>
           ))

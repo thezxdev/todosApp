@@ -15,11 +15,13 @@ import {
 import { useAppDispatch, useAppSelector } from '../store';
 import { openCloseModal } from '../store/slices/updateModalSlice';
 
-// interface Props {
-//   id: number;
-// }
+interface Props {
+  id: string;
+  title: string;
+  description: string;
+}
 
-export const TodoCard: FC = () => {
+export const TodoCard: FC<Props> = ({ description, id, title }) => {
 
   const { isModalOpen } = useAppSelector( state => state.modalUpdate );
   const { isLoading, message, todos, selectedTodo } = useAppSelector( state => state.todos );
@@ -35,7 +37,7 @@ export const TodoCard: FC = () => {
         sx={{
           textAlign: 'center'
         }}
-        title="skksksks"
+        title={ title }
         action={
           <IconButton aria-label="settings">
             <MoreVertOutlined />
@@ -44,9 +46,7 @@ export const TodoCard: FC = () => {
       />
       <CardContent>
         <Typography variant="body2">
-          Consequat eu anim reprehenderit cupidatat cupidatat magna.
-          Consequat eu anim reprehenderit cupidatat cupidatat magna.
-          Consequat eu anim reprehenderit cupidatat cupidatat magna.
+          { description }
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>

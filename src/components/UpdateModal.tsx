@@ -1,9 +1,17 @@
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { v4 as uuidv4 } from 'uuid';
+
 import { SaveOutlined } from '@mui/icons-material';
-import { Button, Checkbox, FormControlLabel, IconButton, Modal, TextField, Typography } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Modal, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useAppDispatch, useAppSelector } from '../store';
 import { openCloseModal } from '../store/slices/updateModalSlice';
-import { useForm } from '../hooks/useForm';
+
+import { setTodo } from '../store/slices/todosSlice';
+
+// import { useForm } from '../hooks/useForm';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -17,9 +25,15 @@ const style = {
   p: 4,
 };
 
+interface IFormInput {
+  title: string;
+  description: string;
+  completed: boolean;
+}
+
 export const UpdateModal = () => {
 
-  const { isModalOpen, message } = useAppSelector( state => state.modalUpdate );
+  const { isModalOpen, message: modalMessage } = useAppSelector( state => state.modalUpdate );
   const dispatch = useAppDispatch();
 
   const handleClose= () => {
@@ -28,36 +42,69 @@ export const UpdateModal = () => {
 
   }
 
+  const schema = yup.object({
+    title: yup.string().required(),
+    description: yup.string().required(),
+    completed: yup.boolean().notRequired()
+  })
+
   // Formulario
-  const { completed, description, title, onChange, state } = useForm({
-    title: '',
-    description: '',
-    completed: false,
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>({
+    resolver: yupResolver( schema )
   });
 
-  return (
 
+
+  const onSubmit: SubmitHandler<IFormInput> = ( data ) => {
+
+    if( modalMessage === 'Crear Todo' ) {      
+      const todo = {
+        ...data,
+        id: uuidv4()
+      }
+      dispatch( setTodo(todo ) );
+      reset();
+      dispatch( openCloseModal('') );
+      return;
+    }
+
+    // if( modalMessage === 'Modificar Todo' ) {
+
+    //   dispatch();
+    //   reset();
+    //   return;
+    // }
+
+  }
+
+  // const handleSubmit = ( e: SyntheticEvent ) => {
+  //   e.preventDefault();
+  //   console.log( e );
+  // }
+
+  return (
 
     <Modal
       open={ isModalOpen }
       onClose={ () => handleClose() }
     >
       <Box sx={ style }>
-        <Typography variant="h4" textAlign="center" sx={{ marginBottom: 1 }}>{ message }</Typography>
-        <form>
+        <Typography variant="h4" textAlign="center" sx={{ marginBottom: 1 }}>{ modalMessage }</Typography>
+        <form onSubmit={ handleSubmit( onSubmit ) }>
           <TextField
             fullWidth
             label="Título"
-            name="title"
-            onChange={ ({ target }) => onChange( target.value, 'title' ) }
+            { ...register('title')}
+            // onChange={ ({ target }) => onChange( target.value, 'title' ) }
           />
+          { errors.title && <Typography color="red">El título es requerido</Typography> }
 
           <FormControlLabel
             sx={{ width: '100%' }}
             label="¿Completado?"
             control={ <Checkbox
-              name="completed"
-              onChange={ ({ target }) => onChange( target.checked, 'completed' ) }
+              { ...register('completed') }
+              // onChange={ ({ target }) => onChange( target.checked, 'completed' ) }
             /> }
             
           />
@@ -65,13 +112,12 @@ export const UpdateModal = () => {
           <TextField
             fullWidth
             label="Descripción"
-            name="description"
-            onChange={ ({ target }) => onChange( target.value, 'description' )}
+            { ...register('description') }
+            // onChange={ ({ target }) => onChange( target.value, 'description' )}
           />
+          { errors.description && <Typography color="red">El título es requerido</Typography> }
 
-          <pre>{ JSON.stringify( state ) }</pre>
-
-          <Button variant="outlined" startIcon={ <SaveOutlined /> } fullWidth sx={{ marginTop: 2 }}>
+          <Button type="submit" variant="outlined" startIcon={ <SaveOutlined /> } fullWidth sx={{ marginTop: 2 }}>
             Guardar
           </Button>
 
