@@ -15,11 +15,11 @@ import {
 import { useAppDispatch, useAppSelector } from '../store';
 import { openCloseModal } from '../store/slices/updateModalSlice';
 
-interface Props {
-  id: number;
-}
+// interface Props {
+//   id: number;
+// }
 
-export const TodoCard: FC<Props> = ({ id }) => {
+export const TodoCard: FC = () => {
 
   const { isModalOpen } = useAppSelector( state => state.modalUpdate );
   const { isLoading, message, todos, selectedTodo } = useAppSelector( state => state.todos );

@@ -6,6 +6,7 @@ import { useAppSelector } from './store';
 export const TodoApp = () => {
 
   const { isModalOpen } = useAppSelector( state => state.modalUpdate );
+  const { todos } = useAppSelector( state => state.todos );
 
   return (
     <Grid
@@ -15,7 +16,7 @@ export const TodoApp = () => {
       width='80%'
     >
       {
-        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(val => (
+        todos.map(({ id  }) => (
           <Grid
             item
             sx={{
@@ -27,10 +28,9 @@ export const TodoApp = () => {
                 xl: '25%'
               }
             }}
-            key={val}
+            key={ id }
           >
             <TodoCard
-              id={val}
             />
           </Grid>
         ))

@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 // import type { RootState } from '../../store';
 
 interface todosInterface {
-  id?: string;
+  id: number;
   completed: boolean;
   description: string;
   title: string;
@@ -33,7 +33,7 @@ export const todosSlice = createSlice({
           : todo
       });
     },
-    deleteTodo: ( state, action: PayloadAction<string> ) => {
+    deleteTodo: ( state, action: PayloadAction<number> ) => {
       state.todos = state.todos.filter( todo => todo.id !== action.payload );
     },
     setTodo: ( state, action: PayloadAction<todosInterface> ) => {
