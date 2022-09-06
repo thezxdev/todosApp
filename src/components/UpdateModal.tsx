@@ -19,12 +19,12 @@ const style = {
 
 export const UpdateModal = () => {
 
-  const { isModalOpen } = useAppSelector( state => state.modalUpdate );
+  const { isModalOpen, message } = useAppSelector( state => state.modalUpdate );
   const dispatch = useAppDispatch();
 
   const handleClose= () => {
 
-    dispatch( openCloseModal() );
+    dispatch( openCloseModal('') );
 
   }
 
@@ -43,7 +43,7 @@ export const UpdateModal = () => {
       onClose={ () => handleClose() }
     >
       <Box sx={ style }>
-        <Typography variant="h4" textAlign="center" sx={{ marginBottom: 1 }}>Crear todo</Typography>
+        <Typography variant="h4" textAlign="center" sx={{ marginBottom: 1 }}>{ message }</Typography>
         <form>
           <TextField
             fullWidth

@@ -26,7 +26,7 @@ export const TodoCard: FC = () => {
   const dispatch = useAppDispatch();
 
   const handleModal = () => {
-    dispatch( openCloseModal() );
+    dispatch( openCloseModal('Modificar Todo') );
   }
 
   return (
