@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../store';
 import { openCloseModal } from '../store/slices/updateModalSlice';
+import { deleteTodo } from '../store/slices/todosSlice';
 
 interface Props {
   id: string;
@@ -25,10 +26,15 @@ export const TodoCard: FC<Props> = ({ description, id, title }) => {
 
   const { isModalOpen } = useAppSelector( state => state.modalUpdate );
   const { isLoading, message, todos, selectedTodo } = useAppSelector( state => state.todos );
+
   const dispatch = useAppDispatch();
 
   const handleModal = () => {
     dispatch( openCloseModal('Modificar Todo') );
+  }
+
+  const handleDelete = ( id: string ) => {
+    dispatch( deleteTodo( id ) );
   }
 
   return (
@@ -53,7 +59,7 @@ export const TodoCard: FC<Props> = ({ description, id, title }) => {
         <IconButton onClick={ () => handleModal() }>
           <AutorenewOutlined color="info" />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={ () => handleDelete( id ) }>
           <DeleteForeverOutlined color='error' />
         </IconButton>
       </CardActions>
