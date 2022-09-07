@@ -14,23 +14,33 @@ import {
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../store';
 import { openCloseModal } from '../store/slices/updateModalSlice';
-import { deleteTodo } from '../store/slices/todosSlice';
+import { deleteTodo, setActiveTodo } from '../store/slices/todosSlice';
 
 interface Props {
   id: string;
   title: string;
   description: string;
+  completed: boolean;
 }
 
-export const TodoCard: FC<Props> = ({ description, id, title }) => {
+interface todosInterface {
+  id: string;
+  completed: boolean;
+  description: string;
+  title: string;
+}
+
+export const TodoCard: FC<Props> = ({ description, id, title, completed }) => {
 
   const { isModalOpen } = useAppSelector( state => state.modalUpdate );
   const { isLoading, message, todos, selectedTodo } = useAppSelector( state => state.todos );
 
   const dispatch = useAppDispatch();
 
-  const handleModal = () => {
+  const handleUpdate = ( todo: todosInterface ) => {
+
     dispatch( openCloseModal('Modificar Todo') );
+    dispatch( setActiveTodo( todo ) );
   }
 
   const handleDelete = ( id: string ) => {
@@ -56,7 +66,7 @@ export const TodoCard: FC<Props> = ({ description, id, title }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <IconButton onClick={ () => handleModal() }>
+        <IconButton onClick={ () => handleUpdate({ completed, id, description, title }) }>
           <AutorenewOutlined color="info" />
         </IconButton>
         <IconButton onClick={ () => handleDelete( id ) }>

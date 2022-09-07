@@ -19,7 +19,7 @@ interface todoState {
 const initialState: todoState = {
   todos: [],
   isLoading: false,
-  message: ''
+  message: '',
 }
 
 export const todosSlice = createSlice({
@@ -45,16 +45,24 @@ export const todosSlice = createSlice({
     setTodos: ( state, action: PayloadAction<todosInterface[]> ) => {
       state.todos = action.payload
     },
+    setActiveTodo: ( state, action: PayloadAction<todosInterface> ) => {
+      state.selectedTodo = action.payload;
+    },
     setIsLoading: ( state ) => {
       state.isLoading = !state.isLoading;
+    },
+    clearActiveTodo: ( state ) => {
+      state.selectedTodo = undefined;
     }
   }
 });
 // Action creators are generated for each case reducer function
 export const {
-  updateTodo,
+  clearActiveTodo,
   deleteTodo,
+  setActiveTodo,
+  setIsLoading,
   setTodo,
   setTodos,
-  setIsLoading
+  updateTodo,
 } = todosSlice.actions;

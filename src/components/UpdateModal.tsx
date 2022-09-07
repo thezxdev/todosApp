@@ -9,7 +9,7 @@ import { Box } from '@mui/system';
 import { useAppDispatch, useAppSelector } from '../store';
 import { openCloseModal } from '../store/slices/updateModalSlice';
 
-import { setTodo } from '../store/slices/todosSlice';
+import { clearActiveTodo, setTodo, updateTodo } from '../store/slices/todosSlice';
 
 // import { useForm } from '../hooks/useForm';
 
@@ -34,6 +34,9 @@ interface IFormInput {
 export const UpdateModal = () => {
 
   const { isModalOpen, message: modalMessage } = useAppSelector( state => state.modalUpdate );
+
+  const { selectedTodo } = useAppSelector( state => state.todos );
+
   const dispatch = useAppDispatch();
 
   const handleClose= () => {
@@ -50,7 +53,12 @@ export const UpdateModal = () => {
 
   // Formulario
   const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>({
-    resolver: yupResolver( schema )
+    resolver: yupResolver( schema ),
+    defaultValues: {
+      completed: selectedTodo?.completed,
+      description: selectedTodo?.description,
+      title: selectedTodo?.title,
+    }
   });
 
 
@@ -68,12 +76,19 @@ export const UpdateModal = () => {
       return;
     }
 
-    // if( modalMessage === 'Modificar Todo' ) {
-
-    //   dispatch();
-    //   reset();
-    //   return;
-    // }
+    if( modalMessage === 'Modificar Todo' ) {
+      const newTodo = {
+        id: selectedTodo!.id,
+        completed: data.completed,
+        description: data.description,
+        title: data.title,
+      }
+      dispatch( updateTodo( newTodo ) );
+      dispatch( clearActiveTodo() );
+      reset();
+      dispatch( openCloseModal('') );
+      return;
+    }
 
   }
 
